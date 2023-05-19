@@ -12,17 +12,21 @@ router.get("/celebrities/create", (req, res) => {
   res.render('celebrities/new-celebrity');
 });
 
+router.get("/celebrities", (req, res) => {
+  Celebrity.find()
+  .then((allCelebs) =>{
+    res.render('celebrities/celebrities', {celebrities: allCelebs});
+  }).catch((err)=> console.log(err))
+});
+
 router.post("/celebrities/create", (req, res) => {
   Celebrity.create({
     name: req.body.celebName,
     occupation: req.body.celebOccupation,
     catchPhrase: req.body.catchPhrase
   }).then((err, response)=>{
-    if(err) {
-      res.render('celebrities/new-celebrity');
-    }
     res.redirect('celebrities');
-  })
+  }).catch((err)=> res.render('celebrities/new-celebrity'))
 });
 
 module.exports = router;
