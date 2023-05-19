@@ -24,9 +24,18 @@ const capitalized = string => string[0].toUpperCase() + string.slice(1).toLowerC
 
 app.locals.title = `${capitalized(projectName)}- Generated with Ironlauncher`;
 
+
 // 👇 Start handling routes here
-const index = require('./routes/index');
-app.use('/', index);
+const celebrityRoutes = require("./routes/routes/celebrities.routes");
+app.use("/", celebrityRoutes);
+// for now, all routes have a "/" as the firsts argument.   we'll talk about it later
+// also, fun fact, route files are called controllers, this is the C in the MVC pattern
+
+const movieRoutes = require("./routes/routes/movies.routes.js");
+app.use("/movies", movieRoutes);
+// the first arguments in app.use when you are connecting a routes file
+// represents a prefix that you are attaching to every single route 
+// in that file
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require('./error-handling')(app);
