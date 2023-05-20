@@ -32,7 +32,7 @@ app.use("/", celebrityRoutes);
 // also, fun fact, route files are called controllers, this is the C in the MVC pattern
 
 const movieRoutes = require("./routes/routes/movies.routes.js");
-app.use("/movies", movieRoutes);
+app.use("/", movieRoutes);
 // the first arguments in app.use when you are connecting a routes file
 // represents a prefix that you are attaching to every single route 
 // in that file
