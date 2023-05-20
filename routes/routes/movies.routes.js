@@ -27,5 +27,23 @@ router.post("/movies/create", (req, res) => {
   }).catch((err)=> res.render('movies/new-movie'))
 });
 
+router.get("/movies/:theID", (req, res)=>{
+  // the .populate method in mongoose can noly be done after running something like .find or .findbyID
+  // and what it does is it looks at the pokemon that have been found, and then does a subsequent .find on the related model
+  // the string that goes inside the .populate as the argument must match
+  // the key in the model that you are finding
+  // so if Pokemon model has a key called trainer (lowercase)
+  // then that is what you need to put inside .populate
+  // (.populate should always have a lower case argument because keys 
+  // on models should always be lower cased)
+  Movie.findById(req.params.theID).populate("cast")
+  .then((theMovie)=>{
+      // the .populate method, if it works, it finds the .trainer field on each pokemon and transforms it from an ID to an actual trainer object
+      console.log(theMovie);
+      res.render("movies/movie-details", {theMovie: theMovie})
+  })
+
+})
+
 
 module.exports = router;
