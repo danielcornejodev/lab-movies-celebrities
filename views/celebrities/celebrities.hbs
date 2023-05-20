@@ -1,7 +1,10 @@
 <h2>Celebrities</h2>
 
 {{#each celebrities}}
-    <h3>{{this.name}}</h3>
+    <a href="/celebrities/{{this._id}}">
+        <h3>{{this.name}}</h3>
+    </a>
 {{/each}}
 
 <a href="/">Return Home</a>
+<a href="/celebrities/create">Create Celebrity</a>

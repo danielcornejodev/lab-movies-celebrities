@@ -5,7 +5,8 @@ const Schema = mongoose.Schema;
 const celebSchema = new Schema({
     name: String,
     occupation: String, 
-    catchPhrase: String
+    catchPhrase: String,
+    films: {type: mongoose.Types.ObjectId, ref: 'Movie'}
 });
 
 const Celebrity = mongoose.model('Celebrity', celebSchema);
