@@ -44,12 +44,40 @@ router.get("/movies/:theID", (req, res)=>{
   }).catch((err)=> console.log(err))
 })
 
-router.post("/movie/delete/:theID", (req, res)=>{
+router.post("/movie/:theID/delete", (req, res)=>{
   Movie.findByIdAndRemove(req.params.theID)
   .then(()=>{
       res.redirect("/movies");
   }).catch((err)=> console.log(err));
 });
+
+router.get("/movie/:id/edit", (req, res)=>{
+  Movie.findById(req.params.id)
+  .then((theMovie)=>{
+      Celebrity.find().then((allCast)=>{
+
+          allCast.forEach((actor) => {
+            if((actor._id).equals(theMovie.cast)) {
+              actor.matchesMovie = true;
+            }
+          })
+
+          res.render("movies/edit-movie", {theMovie: theMovie, cast: allCast})
+      })
+  }).catch((err)=> console.log(err));
+});
+
+router.post("/movie/:theID/update", (req, res)=>{
+  Movie.findByIdAndUpdate(req.params.theID,{
+    title: req.body.movieTitle,
+    genre: req.body.movieGenre,
+    plot: req.body.moviePlot,
+    cast: req.body.theCast
+  }).then(()=>{
+      res.redirect("/movies/"+req.params.theID)
+  }).catch((err)=> console.log(err));
+
+})
 
 
 module.exports = router;

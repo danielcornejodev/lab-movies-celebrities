@@ -10,7 +10,12 @@
 </div>
 
 <br><br><br>
-<form action="/movie/delete/{{theMovie._id}}" method="POST">
+<a href="/movie/{{theMovie._id}}/edit">
+    Edit This Movie
+</a>
+
+<br><br><br>
+<form action="/movie/{{theMovie._id}}/delete" method="POST">
     <button>Delete This Movie</button>
 </form>
 
