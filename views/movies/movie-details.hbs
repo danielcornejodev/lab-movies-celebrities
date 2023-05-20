@@ -8,6 +8,12 @@
     Occupation: {{theMovie.cast.occupation}} <br>
     Catch Phrase: {{theMovie.cast.catchPhrase}}
 </div>
+
+<br><br><br>
+<form action="/movie/delete/{{theMovie._id}}" method="POST">
+    <button>Delete This Movie</button>
+</form>
+
 <br>
 <br>
 <a href="/">Return Home</a> |

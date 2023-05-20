@@ -41,9 +41,15 @@ router.get("/movies/:theID", (req, res)=>{
       // the .populate method, if it works, it finds the .trainer field on each pokemon and transforms it from an ID to an actual trainer object
       console.log(theMovie);
       res.render("movies/movie-details", {theMovie: theMovie})
-  })
-
+  }).catch((err)=> console.log(err))
 })
+
+router.post("/movie/delete/:theID", (req, res)=>{
+  Movie.findByIdAndRemove(req.params.theID)
+  .then(()=>{
+      res.redirect("/movies");
+  }).catch((err)=> console.log(err));
+});
 
 
 module.exports = router;
