@@ -24,6 +24,8 @@ const capitalized = string => string[0].toUpperCase() + string.slice(1).toLowerC
 
 app.locals.title = `${capitalized(projectName)}- Generated with Ironlauncher`;
 
+app.set('trust proxy', 1);
+
 
 // 👇 Start handling routes here
 const celebrityRoutes = require("./routes/routes/celebrities.routes");
@@ -36,6 +38,9 @@ app.use("/", movieRoutes);
 // the first arguments in app.use when you are connecting a routes file
 // represents a prefix that you are attaching to every single route 
 // in that file
+
+const userRoutes = require("./routes/routes/user.routes");
+app.use("/", userRoutes);
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require('./error-handling')(app);
