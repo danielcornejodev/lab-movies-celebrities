@@ -1,4 +1,14 @@
+<nav>
+    <a href="/">Home</a>
+</nav>
+
 <h1>Signup</h1>
+
+{{#if errorMessage}}
+    <div style="background-color: rgb(213, 64, 64)">
+        {{errorMessage}}
+    </div>
+{{/if}}
 
 
 <form action="/signup" method="POST">
@@ -9,8 +19,14 @@
 </div>
 
 <div>
+    Email:
+    <input type="email" name="email">
+    {{!-- validation can happen server side and client side --}}
+</div>
+
+<div>
     Password:
-    <input type="text" name="password">
+    <input type="password" name="password">
 </div>
 
 

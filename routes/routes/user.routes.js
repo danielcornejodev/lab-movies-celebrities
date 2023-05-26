@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const User = require('../../models/User.model.js');
 const bcryptjs = require('bcryptjs');
+const mongoose = require('mongoose');
 
 router.get("/signup", (req, res, next)=>{
     res.render("users/signup");
@@ -10,7 +11,7 @@ router.post("/signup", (req, res, next)=>{
     const numberOfRounds = 10;
     // this variable is what were going to use for the number of rounds of encyption
     const username = req.body.username;
-    
+    const email = req.body.email;
     
     const password = req.body.password;
     // activate bcrypt to create the salt which will act as a signature that will be attached to the scrambled password
@@ -20,25 +21,36 @@ router.post("/signup", (req, res, next)=>{
     .then(salt => bcryptjs.hash(password, salt))
     .then(hashedPassword => {
 
-        User.create({username:username, passwordHash: hashedPassword})
+        User.create({username:username, email: email, passwordHash: hashedPassword})
         .then(()=>{
             res.redirect("/");
         })
+        .catch((error)=>{
+          if (error instanceof mongoose.Error) {
+            // the way to create a message with req.flash to show user feedback
+            // after a redirect is like this
+            console.log(error.message)
+            req.flash("error", error.message);
+            // first argument is the name of the key inside the req.flash object
+            // second argument is the value
+            res.redirect("/signup");
+          }
+        })
     })
-    .catch(error => console.log(error));
+    .catch(error => next(error));
 });
 
 router.get("/login", (req, res)=>{
     res.render("users/login");
 });
 
-router.post("/login", (req, res)=>{
+router.post("/login", (req, res, next)=>{
     const username = req.body.username;
     const password = req.body.password;
     console.log("heres the session", req.session);
 
     // the first thing we do is just to simply search through our databse and see if we find a user with a username matching what the person just typed in
-    User.findOne({ username: username })
+    User.findOne({ username: req.body.username })
     .then(foundUser => {
       if (!foundUser) {
         console.log("no user found");
@@ -46,7 +58,7 @@ router.post("/login", (req, res)=>{
         // we will add a package for error messages later
         res.redirect("/");
         return;
-      } else if (bcryptjs.compareSync(password, foundUser.passwordHash)) {
+      } else if (bcryptjs.compareSync(req.body.password, foundUser.passwordHash)) {
         //******* SAVE THE USER IN THE SESSION ********//
         req.session.currentUser = foundUser;
         // req.session exists as soon as I use the express-session package
@@ -55,7 +67,7 @@ router.post("/login", (req, res)=>{
         res.redirect('/');
       } else {
         console.log("sorry passwords dont match");
-        res.redirect("/");
+        res.redirect("/login");
         
       }
     })
@@ -64,6 +76,7 @@ router.post("/login", (req, res)=>{
 
 
 router.post("/logout", (req, res, next)=>{
+  // console.log(request.session);
   req.session.destroy();
   res.redirect("/");
 })
