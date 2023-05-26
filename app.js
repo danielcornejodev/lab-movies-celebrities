@@ -26,6 +26,13 @@ app.locals.title = `${capitalized(projectName)}- Generated with Ironlauncher`;
 
 app.set('trust proxy', 1);
 
+//create the global variable called user and set it equal to currentUser, which equals foundUser
+app.use((req, res, next)=>{
+    res.locals.user = req.session.currentUser || null;
+    // this means in every hbs file i have a variable called {{user}}
+    next();
+  });
+
 
 // 👇 Start handling routes here
 const celebrityRoutes = require("./routes/routes/celebrities.routes");

@@ -55,7 +55,7 @@ module.exports = (app) => {
         maxAge: 60000
         }, // ADDED code below !!!
         store: MongoStore.create({
-        mongoUrl: 'mongodb://localhost/pokemonApp'
+        mongoUrl: 'mongodb://localhost/lab-movies-celebrities'
     
         // ttl => time to live
         // ttl: 60 * 60 * 24 // 60sec * 60min * 24h => 1 day
