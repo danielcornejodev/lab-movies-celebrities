@@ -12,6 +12,27 @@
 
   <body>
     <div class="container">
+      <nav>
+        {{#if user}}
+            <a href="/celebrities/create">Create Celebrity</a> |
+            <a href="/celebrities">View Celebrities</a> |
+            <a href="/movies/create">Create Movie</a> |
+            <a href="/movies">View Movies</a>
+            <form style="display:inline" action="/logout" method="POST"><button>Logout</button></form>
+        {{else}}
+            <a href="/signup">Sign Up</a> |
+            <a href="/login">Log In</a>
+        {{/if}}
+
+    </nav>
+
+    {{#if successMessage}}
+        <div style="background-color: rgb(64, 213, 101)">
+            {{successMessage}}
+        </div>
+    {{/if}}
+
+
       {{{body}}}
     </div>
 
