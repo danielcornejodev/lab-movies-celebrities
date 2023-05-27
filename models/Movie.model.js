@@ -6,6 +6,7 @@ const movieSchema = new Schema({
     title: String,
     genre: String, 
     plot: String,
+    img: String,
     cast: {type: mongoose.Types.ObjectId, ref: 'Celebrity'}
 });
 

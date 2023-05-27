@@ -12,8 +12,15 @@ router.post("/signup", (req, res, next)=>{
     // this variable is what were going to use for the number of rounds of encyption
     const username = req.body.username;
     const email = req.body.email;
-    
     const password = req.body.password;
+
+    let re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
+    if(!re.test(password)){
+      req.flash("error", "password must contain lowercase, capital, numerals, and special characters");
+      res.redirect("/signup");
+      return;
+    }
+
     // activate bcrypt to create the salt which will act as a signature that will be attached to the scrambled password
     // bcrypt will use this later to compare the password hash to the user's input
     bcryptjs

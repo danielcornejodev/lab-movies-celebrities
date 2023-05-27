@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Movie = require("../../models/Movie.model");
 const Celebrity = require("../../models/Celebrity.model");
+const uploader   = require('../../config/cloudinary');
 
 router.get("/movies/create", (req, res) => {
   Celebrity.find()
@@ -16,16 +17,17 @@ router.get("/movies", (req, res) => {
   }).catch((err)=> console.log(err))
 });
 
-router.post("/movies/create", (req, res) => {
+router.post("/movies/create", uploader.single("img"), (req, res) => {
   Movie.create({
     title: req.body.movieTitle,
     genre: req.body.movieGenre,
     plot: req.body.moviePlot,
+    img: req.file.path,
     cast: req.body.theCast
   }).then((err, response)=>{
     req.flash('success', 'Movie Successfully Created')
     res.redirect('/movies');
-  }).catch((err)=> res.render('movies/new-movie'))
+  }).catch((err)=> res.redirect('/movies'))
 });
 
 router.get("/movies/:theID", (req, res)=>{
