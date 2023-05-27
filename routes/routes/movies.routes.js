@@ -71,13 +71,17 @@ router.get("/movie/:id/edit", (req, res)=>{
   }).catch((err)=> console.log(err));
 });
 
-router.post("/movie/:theID/update", (req, res)=>{
-  Movie.findByIdAndUpdate(req.params.theID,{
+router.post("/movie/:theID/update", uploader.single("img"), (req, res)=>{
+  let theUpdate = {
     title: req.body.movieTitle,
     genre: req.body.movieGenre,
     plot: req.body.moviePlot,
     cast: req.body.theCast
-  }).then(()=>{
+  }
+  
+  if(req.file) theUpdate.img = req.file.path;
+
+  Movie.findByIdAndUpdate(req.params.theID, theUpdate).then(()=>{
       req.flash('success', 'Movie Successfully Updated')
       res.redirect("/movies/"+req.params.theID)
   }).catch((err)=> console.log(err));
