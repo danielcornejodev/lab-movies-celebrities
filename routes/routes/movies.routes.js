@@ -23,7 +23,8 @@ router.post("/movies/create", (req, res) => {
     plot: req.body.moviePlot,
     cast: req.body.theCast
   }).then((err, response)=>{
-    res.redirect('/');
+    req.flash('success', 'Movie Successfully Created')
+    res.redirect('/movies');
   }).catch((err)=> res.render('movies/new-movie'))
 });
 
@@ -47,6 +48,7 @@ router.get("/movies/:theID", (req, res)=>{
 router.post("/movie/:theID/delete", (req, res)=>{
   Movie.findByIdAndRemove(req.params.theID)
   .then(()=>{
+      req.flash('success', 'Movie Successfully Deleted')
       res.redirect("/movies");
   }).catch((err)=> console.log(err));
 });
@@ -74,6 +76,7 @@ router.post("/movie/:theID/update", (req, res)=>{
     plot: req.body.moviePlot,
     cast: req.body.theCast
   }).then(()=>{
+      req.flash('success', 'Movie Successfully Updated')
       res.redirect("/movies/"+req.params.theID)
   }).catch((err)=> console.log(err));
 

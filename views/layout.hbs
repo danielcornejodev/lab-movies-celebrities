@@ -27,9 +27,15 @@
     </nav>
 
     {{#if successMessage}}
-        <div style="background-color: rgb(64, 213, 101)">
-            {{successMessage}}
-        </div>
+      <div style="background-color: rgb(64, 213, 101)">
+          {{successMessage}}
+      </div>
+    {{/if}}
+
+    {{#if errorMessage}}
+      <div style="background-color: rgb(213, 64, 64)">
+          {{errorMessage}}
+      </div>
     {{/if}}
 
 

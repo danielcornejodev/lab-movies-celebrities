@@ -53,20 +53,23 @@ router.post("/login", (req, res, next)=>{
     User.findOne({ username: req.body.username })
     .then(foundUser => {
       if (!foundUser) {
-        console.log("no user found");
+        // this if only happens we successfully queries the databse and there is no user with that username
+        req.flash("error", "Username Not Found");
         // for now we'll just console log an error message if we cant find a user with that username
         // we will add a package for error messages later
-        res.redirect("/");
+        res.redirect("/login");
         return;
       } else if (bcryptjs.compareSync(req.body.password, foundUser.passwordHash)) {
         //******* SAVE THE USER IN THE SESSION ********//
         req.session.currentUser = foundUser;
+        // ^ this is the magic right here this is how we log in
         // req.session exists as soon as I use the express-session package
         // but right now I am created req.session.currentUser and saving foundUser's info there in the session
         // logging somebody in is really nothing more than saving their user info to the session
+        req.flash("success", "Successfully Logged In");
         res.redirect('/');
       } else {
-        console.log("sorry passwords dont match");
+        req.flash("error", "Incorrect Password");
         res.redirect("/login");
         
       }
