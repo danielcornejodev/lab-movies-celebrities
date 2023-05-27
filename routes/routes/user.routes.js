@@ -91,5 +91,30 @@ router.post("/logout", (req, res, next)=>{
   res.redirect("/");
 })
 
+router.get("/see-users", (req, res, next)=>{
+  if(!(req.session.currentUser && req.session.currentUser.admin)){
+    res.redirect("/");
+    return;
+  }
+  User.find()
+  .then((allUsers)=>{
+    const nonAdminUsers = allUsers.filter(user => user.admin === false)
+    res.render("users/all-users", {users: nonAdminUsers});
+  }).catch((err)=>next(err));
+})
+
+router.post("/delete-user", (req, res, next)=>{
+  if(!(req.session.currentUser && req.session.currentUser.admin)){
+    res.redirect("/");
+    return;
+  }
+  // when we deleted pokemon we put the ID in the params
+  // but this time were putting in the req.body using a hidden input
+  User.findByIdAndRemove(req.body.theUserID)
+  .then(()=>{
+    res.redirect("/see-users")
+  }).catch((err)=>next(err));
+});
+
 
 module.exports = router;
